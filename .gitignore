@@ -1,0 +1,9 @@
+﻿# Ignore .dll files
+*.dll
+
+/.vs
+/hackathon-2023/.vs/hackathon-2023
+
+# Ignore obj and bin directories commonly used in .NET projects
+obj/
+bin/
