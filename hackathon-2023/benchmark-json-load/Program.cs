@@ -3,6 +3,7 @@ using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.IO;
 
 namespace benchmark_json_load
@@ -11,7 +12,9 @@ namespace benchmark_json_load
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run(typeof(Program).Assembly);
+            //_ = BenchmarkRunner.Run(typeof(Program).Assembly);
+            //new Benchmarks().JObjectLoad();
+            new Benchmarks().Deserialize();
         }
     }
 
@@ -41,11 +44,26 @@ namespace benchmark_json_load
                 }
             }
 
+            //version
             var jObject = JObject.Load(jsonReader, DefaultLoadSettings);
             var versionToken = jObject["version"];
             int version = versionToken.Value<int>();
 
-            return new LockFile() { Version = version };
+            //projectFileDependencyGroups
+            JObject projectFileDependencyGroupsJson = jObject["projectFileDependencyGroups"] as JObject;
+            var projectFileDependencyGroups = new List<ProjectFileDependencyGroup>(projectFileDependencyGroupsJson.Count);
+            foreach (var child in projectFileDependencyGroupsJson)
+            {
+                var jDependenciesArray = child.Value as JArray;
+                var dependencies = new List<string>(jDependenciesArray.Count);
+                foreach (var dependency in jDependenciesArray)
+                {
+                    dependencies.Add(dependency.Value<string>());
+                }
+                projectFileDependencyGroups.Add(new ProjectFileDependencyGroup(child.Key, dependencies));
+            }
+
+            return new LockFile() { Version = version, ProjectFileDependencyGroups = projectFileDependencyGroups };
         }
 
         [Benchmark]
@@ -55,7 +73,7 @@ namespace benchmark_json_load
             using var textReader = new StreamReader(assetsFileStream);
             using var jsonReader = new JsonTextReader(textReader);
 
-            JsonSerializer serializer = new();
+            JsonSerializer serializer = JsonSerializer.Create();
             var lockFile = serializer.Deserialize<LockFile>(jsonReader);
 
             return lockFile;

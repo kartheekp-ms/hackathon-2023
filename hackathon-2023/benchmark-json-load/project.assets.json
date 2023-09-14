@@ -1,3 +1,39 @@
 {
-  "version": 3
+  "version": 3,
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "Microsoft.CodeAnalysis.BannedApiAnalyzers >= 3.3.3",
+      "Microsoft.CodeAnalysis.FxCopAnalyzers >= 2.9.8",
+      "Microsoft.CodeAnalysis.PublicApiAnalyzers >= 3.3.4",
+      "Microsoft.Extensions.FileProviders.Abstractions >= 6.0.0",
+      "Microsoft.Extensions.FileSystemGlobbing >= 6.0.0",
+      "Microsoft.SourceLink.GitHub >= 1.0.0",
+      "Microsoft.VisualStudioEng.MicroBuild.Core >= 1.0.0",
+      "NuGet.Credentials >= 6.8.0-rc.32767",
+      "NuGet.ProjectModel >= 6.8.0-rc.32767"
+    ],
+    ".NETStandard,Version=v2.0": [
+      "Microsoft.CodeAnalysis.BannedApiAnalyzers >= 3.3.3",
+      "Microsoft.CodeAnalysis.FxCopAnalyzers >= 2.9.8",
+      "Microsoft.CodeAnalysis.PublicApiAnalyzers >= 3.3.4",
+      "Microsoft.Extensions.FileProviders.Abstractions >= 6.0.0",
+      "Microsoft.Extensions.FileSystemGlobbing >= 6.0.0",
+      "Microsoft.SourceLink.GitHub >= 1.0.0",
+      "Microsoft.VisualStudioEng.MicroBuild.Core >= 1.0.0",
+      "NETStandard.Library >= 2.0.3",
+      "NuGet.Credentials >= 6.8.0-rc.32767",
+      "NuGet.ProjectModel >= 6.8.0-rc.32767"
+    ],
+    "net5.0": [
+      "Microsoft.CodeAnalysis.BannedApiAnalyzers >= 3.3.3",
+      "Microsoft.CodeAnalysis.FxCopAnalyzers >= 2.9.8",
+      "Microsoft.CodeAnalysis.PublicApiAnalyzers >= 3.3.4",
+      "Microsoft.Extensions.FileProviders.Abstractions >= 6.0.0",
+      "Microsoft.Extensions.FileSystemGlobbing >= 6.0.0",
+      "Microsoft.SourceLink.GitHub >= 1.0.0",
+      "Microsoft.VisualStudioEng.MicroBuild.Core >= 1.0.0",
+      "NuGet.Credentials >= 6.8.0-rc.32767",
+      "NuGet.ProjectModel >= 6.8.0-rc.32767"
+    ]
+  }
 }
