@@ -49,7 +49,7 @@ namespace benchmark_json_load
             var versionToken = jObject["version"];
             int version = versionToken.Value<int>();
 
-            ////projectFileDependencyGroups
+            //projectFileDependencyGroups
             JObject projectFileDependencyGroupsJson = jObject["projectFileDependencyGroups"] as JObject;
             var projectFileDependencyGroups = new List<ProjectFileDependencyGroup>(projectFileDependencyGroupsJson.Count);
             foreach (var child in projectFileDependencyGroupsJson)
@@ -63,7 +63,32 @@ namespace benchmark_json_load
                 projectFileDependencyGroups.Add(new ProjectFileDependencyGroup(child.Key, dependencies));
             }
 
-            return new LockFile() { Version = version };
+            //libraries
+            JObject librariesJson = jObject["libraries"] as JObject;
+            var lockFileLibraries = new List<LockFileLibrary>(librariesJson.Count);
+            foreach (var child in librariesJson)
+            {
+                var lockFileLibrary = new LockFileLibrary();
+                lockFileLibrary.Name = child.Key;
+
+                lockFileLibrary.Type = child.Value["type"].Value<string>();
+                lockFileLibrary.Path = child.Value["path"].Value<string>();
+                lockFileLibrary.Sha512 = child.Value["sha512"]?.Value<string>();
+                lockFileLibrary.HasTools = child.Value["hasTools"]?.Value<bool?>();
+                if (child.Value["files"] != null)
+                {
+                    var filesArray = child.Value["files"] as JArray;
+                    var files = new List<string>(filesArray.Count);
+                    foreach (var dependency in filesArray)
+                    {
+                        files.Add(dependency.Value<string>());
+                    }
+                    lockFileLibrary.Files = files;
+                }
+                lockFileLibraries.Add(lockFileLibrary);
+            }
+
+            return new LockFile() { Version = version, ProjectFileDependencyGroups = projectFileDependencyGroups, Libraries = lockFileLibraries };
         }
 
         [Benchmark]
