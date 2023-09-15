@@ -12,9 +12,9 @@ namespace benchmark_json_load
     {
         static void Main(string[] args)
         {
-            //_ = BenchmarkRunner.Run(typeof(Program).Assembly);
+            _ = BenchmarkRunner.Run(typeof(Program).Assembly);
             //new Benchmarks().JObjectLoad();
-            new Benchmarks().Deserialize();
+            //new Benchmarks().Deserialize();
         }
     }
 
@@ -49,7 +49,7 @@ namespace benchmark_json_load
             var versionToken = jObject["version"];
             int version = versionToken.Value<int>();
 
-            //projectFileDependencyGroups
+            ////projectFileDependencyGroups
             JObject projectFileDependencyGroupsJson = jObject["projectFileDependencyGroups"] as JObject;
             var projectFileDependencyGroups = new List<ProjectFileDependencyGroup>(projectFileDependencyGroupsJson.Count);
             foreach (var child in projectFileDependencyGroupsJson)
@@ -63,7 +63,7 @@ namespace benchmark_json_load
                 projectFileDependencyGroups.Add(new ProjectFileDependencyGroup(child.Key, dependencies));
             }
 
-            return new LockFile() { Version = version, ProjectFileDependencyGroups = projectFileDependencyGroups };
+            return new LockFile() { Version = version };
         }
 
         [Benchmark]

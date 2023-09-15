@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Microsoft.Diagnostics.Runtime.Utilities;
 
 namespace benchmark_json_load
 {
@@ -38,16 +39,39 @@ namespace benchmark_json_load
 
         public override IList<ProjectFileDependencyGroup> ReadJson(JsonReader reader, Type objectType, IList<ProjectFileDependencyGroup> existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var jObject = JObject.Load(reader);
-            var groups = new List<ProjectFileDependencyGroup>();
+            var result = new List<ProjectFileDependencyGroup>();
 
-            foreach (var prop in jObject.Properties())
+            while (reader.Read())
             {
-                var group = new ProjectFileDependencyGroup(prop.Name, prop.Value.ToObject<IList<string>>());
-                groups.Add(group);
+                if (reader.TokenType == JsonToken.PropertyName)
+                {
+                    string framework = (string)reader.Value;
+
+                    reader.Read(); // Move to the start of the array
+                    if (reader.TokenType == JsonToken.StartArray)
+                    {
+                        List<string> dependencies = new();
+
+                        while (reader.Read())
+                        {
+                            if (reader.TokenType == JsonToken.EndArray)
+                            {
+                                result.Add(new ProjectFileDependencyGroup(framework, dependencies));
+                                break;
+                            }
+
+                            string dependency = (string)reader.Value;
+                            dependencies.Add(dependency);
+                        }
+                    }
+                }
+                else if (reader.TokenType == JsonToken.EndObject)
+                {
+                    break;
+                }
             }
 
-            return groups;
+            return result;
         }
     }
 
