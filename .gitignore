@@ -7,3 +7,4 @@
 # Ignore obj and bin directories commonly used in .NET projects
 obj/
 bin/
+/hackathon-2023/.vs/ProjectEvaluation
