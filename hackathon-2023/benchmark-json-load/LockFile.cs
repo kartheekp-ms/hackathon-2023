@@ -74,7 +74,7 @@ namespace benchmark_json_load
                                         library.Path = reader.Value.ToString();
                                         break;
                                     case "hasTools":
-                                        library.HasTools = (bool?)reader.Value;
+                                        library.HasTools = (bool)reader.Value;
                                         break;
                                     case "files":
                                         library.Files = new List<string>();
